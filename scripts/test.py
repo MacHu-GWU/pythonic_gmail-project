@@ -2,7 +2,7 @@
 
 from pythonic_gmail.tests.one import one
 
-email = "husanhe@gmail.com"
+
 client = one.client
-res = client.users().getProfile(email)
+res = client.users().getProfile(userId="me").execute()
 print(res)
