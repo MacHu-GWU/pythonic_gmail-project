@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import typing as T
 from pathlib import Path
 
 import google.auth.exceptions
@@ -7,6 +8,9 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+
+if T.TYPE_CHECKING:  # pragma: no cover
+    from googleapiclient._apis.gmail.v1 import GmailResource
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
@@ -23,7 +27,7 @@ file = "send_and_receive_email_via_gmail_poc_token.json"
 path_token = dir_google / file
 
 
-def auth():
+def auth() -> "GmailResource":
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -49,7 +53,7 @@ def auth():
         # Save the credentials for the next run
         path_token.write_text(creds.to_json())
 
-    service = build("gmail", "v1", credentials=creds)
+    service: "GmailResource" = build("gmail", "v1", credentials=creds)
     return service
 
 
