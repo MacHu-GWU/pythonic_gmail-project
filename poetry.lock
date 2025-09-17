@@ -737,6 +737,24 @@ httplib2 = ">=0.19.0,<1.0.0"
 uritemplate = ">=3.0.1,<5"
 
 [[package]]
+name = "google-api-python-client-stubs"
+version = "1.30.0"
+description = "Type stubs for google-api-python-client"
+optional = true
+python-versions = ">=3.7"
+groups = ["main"]
+markers = "extra == \"dev\""
+files = [
+    {file = "google_api_python_client_stubs-1.30.0-py3-none-any.whl", hash = "sha256:a4ade86eca64fd0ff166924f58c2e6780f04810c8c36ce239fcbe733870d9d06"},
+    {file = "google_api_python_client_stubs-1.30.0.tar.gz", hash = "sha256:d6be4fd0f5f3db2342d00a08694347ca925bd556fcec0319fc92728cd85de71b"},
+]
+
+[package.dependencies]
+google-api-python-client = ">=2.176.0"
+types-httplib2 = ">=0.22.0.2"
+typing-extensions = ">=3.10.0"
+
+[[package]]
 name = "google-auth"
 version = "2.40.3"
 description = "Google Authentication Library"
@@ -2755,13 +2773,26 @@ urllib3 = ">=1.26.0"
 keyring = ["keyring (>=15.1)"]
 
 [[package]]
+name = "types-httplib2"
+version = "0.31.0.20250913"
+description = "Typing stubs for httplib2"
+optional = true
+python-versions = ">=3.9"
+groups = ["main"]
+markers = "extra == \"dev\""
+files = [
+    {file = "types_httplib2-0.31.0.20250913-py3-none-any.whl", hash = "sha256:27de80fd22141873bcdbd7c1e482393167cffd6dafbd535414434a4c582d5f49"},
+    {file = "types_httplib2-0.31.0.20250913.tar.gz", hash = "sha256:1e2c4f2950e5413198d83b294f9a97a7d6a3ca5ef72cc2df39fb23376c9341b0"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.13.0"
 description = "Backported and Experimental Type Hints for Python 3.8+"
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"doc\" or (extra == \"doc\" or extra == \"dev\") and python_version < \"3.11\""
+markers = "python_version >= \"3.13\" and (extra == \"dev\" or extra == \"doc\") or extra == \"doc\" or extra == \"dev\""
 files = [
     {file = "typing_extensions-4.13.0-py3-none-any.whl", hash = "sha256:c8dd92cc0d6425a97c18fbb9d1954e5ff92c1ca881a309c45f06ebc0b79058e5"},
     {file = "typing_extensions-4.13.0.tar.gz", hash = "sha256:0a4ac55a5820789d87e297727d229866c9650f6521b64206413c4fbada24d95b"},
@@ -2862,11 +2893,11 @@ type = ["pytest-mypy"]
 
 [extras]
 auto = []
-dev = ["build", "rich", "twine", "wheel"]
+dev = ["build", "google-api-python-client-stubs", "rich", "twine", "wheel"]
 doc = ["Sphinx", "docfly", "furo", "ipython", "nbsphinx", "pygments", "rstobj", "sphinx-copybutton", "sphinx-design", "sphinx-jinja"]
 test = ["pytest", "pytest-cov"]
 
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<4.0"
-content-hash = "d8f0ed067c538b1038bd8a520ed2df5b9633410cbfeed4820730ab243f45fe6e"
+content-hash = "7920729023e88c7890b31c83e58946ab28dbedb88759967b41cd9a01b7d566cd"

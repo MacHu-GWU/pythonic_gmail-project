@@ -46,7 +46,7 @@ dependencies = [
     "enum-mate>=0.1.1,<1.0.0",
     "func-args>=1.0.1,<2.0.0",
     "iterproxy>=0.3.1,<1.0.0",
-    "google-api-python-client>=2.163.0,<3.0.0",
+    "google-api-python-client>=2.157.0,<3.0.0",
     "google-auth-httplib2>=0.2.0,<1.0.0",
     "google-auth-oauthlib>=1.2.1,<2.0.0",
 ]
@@ -68,6 +68,7 @@ dev = [
     "wheel>=0.45.0,<1.0.0", # build wheel package
     "build>=1.2.1,<2.0.0", # build source distribution
     "rich>=13.8.1,<14.0.0", # pretty print
+    "google-api-python-client-stubs>=1.29.0,<2.0.0",
 ]
 
 # ------------------------------------------------------------------------------
