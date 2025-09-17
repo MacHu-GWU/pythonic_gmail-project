@@ -6,7 +6,7 @@ import contextlib
 import subprocess
 from pathlib import Path
 
-__version__ = "0.2.1"
+__version__ = "0.3.1"
 
 
 @contextlib.contextmanager
@@ -26,6 +26,7 @@ def temp_cwd(path: Path):
 def run_unit_test(
     script: str,
     root_dir: str,
+    is_folder: bool = False,
 ):
     """
     Run ``pytest -s --tb=native /path/to/script.py`` Command.
@@ -34,6 +35,8 @@ def run_unit_test(
     :param root_dir: the dir you want to temporarily set as cwd
     """
     bin_pytest = Path(sys.executable).parent / "pytest"
+    if is_folder:
+        script = f"{Path(script).parent}"
     args = [
         f"{bin_pytest}",
         "-s",
