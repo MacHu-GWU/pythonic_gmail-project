@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import typing as T
-
 import pythonic_gmail.api as pg
 from pythonic_gmail.tests.one import one
 
@@ -12,6 +10,7 @@ message_id_list = [
     "199599553c319566",
     "199598bcc7491337",
 ]
+
 
 def batch_get_messages(
     gmail_service,
@@ -34,16 +33,14 @@ def batch_get_messages(
 
     # 分批处理（每批最多100个）
     for i in range(0, len(message_id_list), max_batch_size):
-        batch_id_list = message_id_list[i:i + max_batch_size]
+        batch_id_list = message_id_list[i : i + max_batch_size]
         batch = gmail_service.new_batch_http_request()
         # 添加每个请求到批量中
         for message_id in batch_id_list:
             batch.add(
-                gmail_service.users().messages().get(
-                    userId='me',
-                    id=message_id,
-                    format='full'  # 获取完整邮件内容
-                ),
+                gmail_service.users()
+                .messages()
+                .get(userId="me", id=message_id, format="full"),  # 获取完整邮件内容
                 callback=message_callback,
             )
 
@@ -51,6 +48,8 @@ def batch_get_messages(
         batch.execute()
 
     return message_list
+
+
 message_list = batch_get_messages(
     one.client,
     message_id_list,

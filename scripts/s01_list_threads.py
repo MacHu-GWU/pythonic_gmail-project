@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import typing as T
-
 import pythonic_gmail.api as pg
 from pythonic_gmail.tests.one import one
 
