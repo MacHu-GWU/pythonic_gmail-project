@@ -16,6 +16,16 @@ import typing as T
 from .type_hint import T_KWARGS, T_RESPONSE
 
 
+def default_set_page_size(
+    request_kwargs: T_KWARGS,
+    page_size: int,
+):
+    """
+    Set maxResults in request parameters for page size.
+    """
+    request_kwargs["maxResults"] = page_size
+
+
 def default_get_next_token(
     response: T_RESPONSE,
 ) -> str | None:
@@ -38,8 +48,10 @@ def default_set_next_token(
 def paginate(
     method: T.Callable,
     items_field: str,
+    page_size: int,
     max_items: int,
     kwargs: dict[str, T.Any] | None = None,
+    set_page_size: T.Callable[[T_KWARGS, int], None] = default_set_page_size,
     get_next_token: T.Callable[[T_RESPONSE], str | None] = default_get_next_token,
     set_next_token: T.Callable[[T_KWARGS, str], None] = default_set_next_token,
 ) -> T.Iterator[dict[str, T.Any]]:
@@ -83,6 +95,7 @@ def paginate(
     items_returned = 0
     if kwargs is None:
         kwargs = {}
+    set_page_size(kwargs, page_size)
 
     while True:
         # Execute the API call

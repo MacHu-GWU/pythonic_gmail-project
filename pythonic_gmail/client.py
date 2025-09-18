@@ -14,10 +14,15 @@ endpoints (messages, threads) with a unified pagination mechanism.
 import typing as T
 
 from .paginate import paginate
+from .batch import batch_get
+
 from .model import ListMessagesResponse
 from .iterator import ListMessagesResponseIterProxy
+
 from .model import ListThreadsResponse
 from .iterator import ListThreadsResponseIterProxy
+
+from .model import Message
 
 if T.TYPE_CHECKING:
     from googleapiclient._apis.gmail.v1 import GmailResource
@@ -62,17 +67,31 @@ def pagi_list_messages(
         This function only returns message metadata (ID and threadId).
         Use messages.get API to retrieve full message content.
     """
-    if kwargs is None:
-        kwargs = {}
-
-    # Set the page size for each API request
-    kwargs["maxResults"] = page_size
-
-    paginator = paginate(
-        method=gmail.users().messages().list,
-        items_field="messages",
-        kwargs=kwargs,
-        max_items=max_items,
+    return ListMessagesResponseIterProxy.from_paginator(
+        paginator=paginate(
+            method=gmail.users().messages().list,
+            items_field="messages",
+            kwargs=kwargs,
+            page_size=page_size,
+            max_items=max_items,
+        )
     )
 
-    return ListMessagesResponseIterProxy.from_paginator(paginator)
+
+def batch_get_messages(
+    gmail: "GmailResource",
+    ids: list[str],
+    batch_size: int = 100,
+    kwargs: dict[str, T.Any] | None = None,
+) -> list["Message"]:
+    """
+    https://developers.google.com/workspace/gmail/api/guides/batch
+    """
+    return batch_get(
+        gmail=gmail,
+        method=gmail.users().messages().get,
+        ids=ids,
+        id_arg_name="id",
+        batch_size=batch_size,
+        kwargs=kwargs,
+    )

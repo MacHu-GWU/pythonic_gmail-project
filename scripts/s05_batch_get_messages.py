@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import pythonic_gmail.api as pg
+"""
+This script demonstrates how to batch retrieve multiple Gmail messages using the Gmail API.
+"""
+
+import typing as T
+from more_itertools import batched
 from pythonic_gmail.tests.one import one
 
 from settings import write, path_batch_get_messages_results
+
+if T.TYPE_CHECKING:  # pragma: no cover
+    from googleapiclient._apis.gmail.v1 import GmailResource
 
 message_id_list = [
     "19959e8dc4ed58dc",
@@ -13,9 +21,9 @@ message_id_list = [
 
 
 def batch_get_messages(
-    gmail_service,
+    gmail: "GmailResource",
     message_id_list: list[str],
-    max_batch_size: int = 100,
+    batch_size: int = 100,
 ):
     message_list = []
 
@@ -32,15 +40,18 @@ def batch_get_messages(
             message_list.append(response)
 
     # 分批处理（每批最多100个）
-    for i in range(0, len(message_id_list), max_batch_size):
-        batch_id_list = message_id_list[i : i + max_batch_size]
-        batch = gmail_service.new_batch_http_request()
+    for sub_id_list in batched(message_id_list, batch_size):
+        batch = gmail.new_batch_http_request()
         # 添加每个请求到批量中
-        for message_id in batch_id_list:
+        for message_id in sub_id_list:
             batch.add(
-                gmail_service.users()
+                gmail.users()
                 .messages()
-                .get(userId="me", id=message_id, format="full"),  # 获取完整邮件内容
+                .get(
+                    userId="me",
+                    id=message_id,
+                    format="full",  # 获取完整邮件内容
+                ),
                 callback=message_callback,
             )
 
@@ -52,7 +63,7 @@ def batch_get_messages(
 
 message_list = batch_get_messages(
     one.client,
-    message_id_list,
-    max_batch_size=10,
+    message_id_list=message_id_list,
+    batch_size=10,
 )
 write(path_batch_get_messages_results, message_list)
