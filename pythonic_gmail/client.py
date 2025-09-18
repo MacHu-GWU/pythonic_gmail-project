@@ -28,7 +28,7 @@ def pagi_list_messages(
     kwargs: dict[str, T.Any] | None = None,
     page_size: int = 100,
     max_items: int = 1000,
-) -> ListMessagesResponseIterProxy:
+) -> "ListMessagesResponseIterProxy":
     """
     Paginated Gmail messages list with automatic token handling.
 
@@ -75,4 +75,4 @@ def pagi_list_messages(
         max_items=max_items,
     )
 
-    return ListMessagesResponseIterProxy.from_paginator(paginator, ListMessagesResponse)
+    return ListMessagesResponseIterProxy.from_paginator(paginator)

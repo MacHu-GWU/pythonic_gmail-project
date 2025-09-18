@@ -5,7 +5,6 @@ import typing as T
 from iterproxy import IterProxy
 
 from .model import (
-    T_BASE,
     Message,
     ListMessagesResponse,
     Thread,
@@ -13,20 +12,17 @@ from .model import (
 )
 
 
-class BaseIterProxy(IterProxy):
+class ListMessagesResponseIterProxy(IterProxy[ListMessagesResponse]):
     @classmethod
     def from_paginator(
         cls,
         paginator: T.Iterable,
-        klass: T.Type[T_BASE],
     ):
         return cls(
-            (klass.new(res) for res in paginator),
+            (ListMessagesResponse.new(res) for res in paginator),
         )
 
-
-class ListMessagesResponseIterProxy(BaseIterProxy["ListMessagesResponse"]):
-    def iter_items(self):
+    def iter_items(self) -> T.Iterator["Message"]:
         res: "ListMessagesResponse"
         message: "Message"
         for res in self:
@@ -34,8 +30,17 @@ class ListMessagesResponseIterProxy(BaseIterProxy["ListMessagesResponse"]):
                 yield message
 
 
-class ListThreadsResponseIterProxy(BaseIterProxy["ListThreadsResponse"]):
-    def iter_items(self):
+class ListThreadsResponseIterProxy(IterProxy[ListThreadsResponse]):
+    @classmethod
+    def from_paginator(
+        cls,
+        paginator: T.Iterable,
+    ):
+        return cls(
+            (ListThreadsResponse.new(res) for res in paginator),
+        )
+
+    def iter_items(self) -> T.Iterator["Thread"]:
         res: "ListThreadsResponse"
         thread: "Thread"
         for res in self:
