@@ -59,6 +59,9 @@ class Base(BaseFrozenModel):
         raise NotImplementedError
 
 
+T_BASE = T.TypeVar("T_BASE", bound=Base)
+
+
 @dataclasses.dataclass(frozen=True)
 class AutoForwarding(Base):
     _data: "schemas.AutoForwarding" = dataclasses.field(default=REQ)
