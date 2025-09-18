@@ -40,7 +40,9 @@ except ImportError:  # pragma: no cover
 import dataclasses
 from functools import cached_property
 
-from func_args.api import T_KWARGS, REQ, BaseFrozenModel
+from func_args.api import REQ, BaseFrozenModel
+
+from .type_hint import T_KWARGS, T_RESPONSE
 
 if T.TYPE_CHECKING:  # pragma: no cover
     from googleapiclient._apis.gmail.v1 import schemas
@@ -57,6 +59,10 @@ class Base(BaseFrozenModel):
     @property
     def core_data(self) -> T_KWARGS:
         raise NotImplementedError
+
+    @property
+    def full_data(self) -> T_RESPONSE:
+        return self._data
 
 
 T_BASE = T.TypeVar("T_BASE", bound=Base)
