@@ -50,7 +50,21 @@ Welcome to ``pythonic_gmail`` Documentation
 .. image:: https://pythonic-gmail.readthedocs.io/en/latest/_static/pythonic_gmail-logo.png
     :target: https://pythonic-gmail.readthedocs.io/en/latest/
 
-Documentation for ``pythonic_gmail``.
+**A Pythonic object-oriented wrapper for the Gmail API**
+
+``pythonic_gmail`` transforms the traditional Google Gmail API client into an intuitive, object-oriented interface that follows Python best practices. While the native Gmail API returns raw JSON dictionaries, this library provides structured data models with property-based access, automatic pagination handling, and efficient batch operations.
+
+**Key Features:**
+
+**Object-Oriented Data Models**: All Gmail API responses are wrapped in frozen dataclasses with property-based access. Instead of accessing ``response["messages"][0]["id"]``, you simply use ``message.id``. Each model maintains the original raw data while providing a clean, type-safe interface with intelligent property caching.
+
+**Intelligent Pagination**: Gmail's pagination mechanism with ``pageToken`` and ``nextPageToken`` is completely abstracted away. The library provides iterator proxies that handle token management automatically, allowing you to focus on processing data rather than managing API pagination state.
+
+**Efficient Batch Operations**: Built-in batch processing utilities automatically group individual API calls into efficient batch requests. This significantly reduces HTTP overhead when retrieving multiple messages or threads, improving performance for bulk operations.
+
+**Stable Interface Design**: The library implements a core data extraction pattern where each model exposes essential information through a standardized ``core_data`` property. This provides resilience against API schema changes while maintaining a consistent developer experience.
+
+**Flexible Iterator Architecture**: Advanced iterator proxies support both response-level iteration (for processing API responses in batches) and item-level iteration (for processing individual messages or threads). This dual-mode approach provides flexibility for different use cases and performance requirements.
 
 
 .. _install:
