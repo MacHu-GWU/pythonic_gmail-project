@@ -78,6 +78,23 @@ def pagi_list_messages(
     )
 
 
+def pagi_list_threads(
+    gmail: "GmailResource",
+    kwargs: dict[str, T.Any] | None = None,
+    page_size: int = 100,
+    max_items: int = 1000,
+) -> "ListThreadsResponseIterProxy":
+    return ListThreadsResponseIterProxy.from_paginator(
+        paginator=paginate(
+            method=gmail.users().threads().list,
+            items_field="threads",
+            kwargs=kwargs,
+            page_size=page_size,
+            max_items=max_items,
+        )
+    )
+
+
 def batch_get_messages(
     gmail: "GmailResource",
     ids: list[str],
@@ -90,6 +107,25 @@ def batch_get_messages(
     return batch_get(
         gmail=gmail,
         method=gmail.users().messages().get,
+        ids=ids,
+        id_arg_name="id",
+        batch_size=batch_size,
+        kwargs=kwargs,
+    )
+
+
+def batch_get_threads(
+    gmail: "GmailResource",
+    ids: list[str],
+    batch_size: int = 100,
+    kwargs: dict[str, T.Any] | None = None,
+) -> list["Message"]:
+    """
+
+    """
+    return batch_get(
+        gmail=gmail,
+        method=gmail.users().threads().get,
         ids=ids,
         id_arg_name="id",
         batch_size=batch_size,

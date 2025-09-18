@@ -19,6 +19,10 @@ def batch_get(
     batch_size: int = 50,
     kwargs: dict[str, T.Any] | None = None,
 ):
+    """
+
+    Ref: https://developers.google.com/workspace/gmail/api/guides/batch
+    """
     if kwargs is None:
         kwargs = {}
 
