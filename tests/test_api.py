@@ -60,6 +60,14 @@ def test():
     _ = api.VacationSettings
     _ = api.WatchRequest
     _ = api.WatchResponse
+    _ = api.ListMessagesResponseIterProxy
+    _ = api.ListThreadsResponseIterProxy
+    _ = api.paginate
+    _ = api.batch_get
+    _ = api.pagi_list_messages
+    _ = api.pagi_list_threads
+    _ = api.batch_get_messages
+    _ = api.batch_get_threads
 
 
 if __name__ == "__main__":

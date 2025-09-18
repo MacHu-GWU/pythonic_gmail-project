@@ -54,3 +54,11 @@ from .model import Thread
 from .model import VacationSettings
 from .model import WatchRequest
 from .model import WatchResponse
+from .iterator import ListMessagesResponseIterProxy
+from .iterator import ListThreadsResponseIterProxy
+from .paginate import paginate
+from .batch import batch_get
+from .client import pagi_list_messages
+from .client import pagi_list_threads
+from .client import batch_get_messages
+from .client import batch_get_threads

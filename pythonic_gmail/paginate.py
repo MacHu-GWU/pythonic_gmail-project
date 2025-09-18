@@ -22,6 +22,12 @@ def default_set_page_size(
 ):
     """
     Set maxResults in request parameters for page size.
+
+    Default implementation for Gmail API's pagination mechanism where
+    page size is controlled by the maxResults parameter.
+
+    :param request_kwargs: Request parameters dictionary to modify
+    :param page_size: Number of items to request per page
     """
     request_kwargs["maxResults"] = page_size
 
@@ -31,6 +37,13 @@ def default_get_next_token(
 ) -> str | None:
     """
     Extract nextPageToken from Gmail API response.
+
+    Default implementation for Gmail API's pagination mechanism where
+    the next page token is provided in the nextPageToken field.
+
+    :param response: API response dictionary
+
+    :returns: Next page token if available, None if no more pages
     """
     return response.get("nextPageToken")
 
@@ -41,6 +54,12 @@ def default_set_next_token(
 ):
     """
     Set pageToken in request parameters for next API call.
+
+    Default implementation for Gmail API's pagination mechanism where
+    the page token is passed via the pageToken parameter.
+
+    :param request_kwargs: Request parameters dictionary to modify
+    :param next_token: Token for the next page to retrieve
     """
     request_kwargs["pageToken"] = next_token
 
@@ -56,41 +75,56 @@ def paginate(
     set_next_token: T.Callable[[T_KWARGS, str], None] = default_set_next_token,
 ) -> T.Iterator[dict[str, T.Any]]:
     """
-    Abstract pagination function for Gmail API list methods.
+    Core pagination engine for Gmail API list methods.
 
-    Handles the common pagination pattern used by Gmail API endpoints where
-    responses contain a nextPageToken field for retrieving subsequent pages.
-    Automatically manages token passing between requests and respects item limits.
+    Provides the underlying pagination mechanism used by :func:`~pythonic_gmail.client.pagi_list_messages`
+    and :func:`~pythonic_gmail.client.pagi_list_threads`. Handles nextPageToken
+    management and respects item count limits across multiple API calls.
 
-    :param method: Gmail API method that returns a Resource for execution, example:
-        - https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.messages/list
-        - https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.threads/list
-    :param items_field: field in API response containing the list of items
-    :param get_next_token: Function to extract nextPageToken from API response
-    :param set_next_token: Function to set pageToken in request parameters
+    :param method: Gmail API method that returns a Resource for execution
+    :param items_field: Field name in API response containing the list of items
+    :param page_size: Number of items per API request (sets maxResults)
     :param max_items: Maximum total items to return across all pages
     :param kwargs: Initial parameters for the API call
+    :param set_page_size: Function to set page size in request parameters
+    :param get_next_token: Function to extract nextPageToken from API response
+    :param set_next_token: Function to set pageToken in request parameters
 
     :yields: API response dictionaries containing paginated results
 
-    Example:
-        Using with Gmail messages list API::
+    **Examples**:
+        Direct usage with messages list API::
 
-            def get_token(res):
-                return res.get("nextPageToken")
-
-            def set_token(kw, token):
-                kw["pageToken"] = token
-
-            for response in _paginate(
-                method=client.users().messages().list,
+            for response in paginate(
+                method=gmail_client.users().messages().list,
                 items_field="messages",
-                get_next_token=get_token,
-                set_next_token=set_token,
+                page_size=50,
                 max_items=100,
                 kwargs={"userId": "me"}
             ):
-                print(f"Got {len(response['messages'])} messages")
+                messages = response.get("messages", [])
+                print(f"Got {len(messages)} messages")
+
+        Direct usage with threads list API::
+
+            for response in paginate(
+                method=gmail_client.users().threads().list,
+                items_field="threads",
+                page_size=25,
+                max_items=75,
+                kwargs={"userId": "me"}
+            ):
+                threads = response.get("threads", [])
+                print(f"Got {len(threads)} threads")
+
+    .. note::
+        This is a low-level function. Most users should use
+        :func:`~pythonic_gmail.client.pagi_list_messages` or
+        :func:`~pythonic_gmail.client.pagi_list_threads` instead.
+
+    .. seealso::
+        :func:`~pythonic_gmail.client.pagi_list_messages` and
+        :func:`~pythonic_gmail.client.pagi_list_threads` for high-level interfaces.
     """
     items_returned = 0
     if kwargs is None:
