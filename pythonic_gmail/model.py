@@ -44,6 +44,8 @@ from datetime import datetime, timezone
 from func_args.api import REQ, BaseFrozenModel
 
 from .type_hint import T_KWARGS, T_RESPONSE
+from .utils import extract_email_name, extract_email_address
+from .custom_model import Email
 
 if T.TYPE_CHECKING:  # pragma: no cover
     from googleapiclient._apis.gmail.v1 import schemas
@@ -54,7 +56,7 @@ class Base(BaseFrozenModel):
     _data: dict[str, T.Any] = dataclasses.field(default=REQ)
 
     @classmethod
-    def new(cls, data: dict[str, T.Any]) -> "T.Self":
+    def new(cls, data: dict[str, T.Any]):
         return cls(_data=data)
 
     @property
@@ -897,6 +899,52 @@ class MessagePart(Base):
     @property
     def core_data(self) -> T_KWARGS:
         return {"partId": self.partId, "mimeType": self.mimeType}
+
+    @cached_property
+    def headers_mapping(self) -> dict[str, "MessagePartHeader"]:
+        return {header.name: header for header in self.headers}
+
+    @cached_property
+    def from_(self) -> "MessagePartHeader":
+        return self.headers_mapping["From"]
+
+    @cached_property
+    def from_name(self) -> str:
+        return extract_email_name(self.from_.value)
+
+    @cached_property
+    def from_email(self) -> str:
+        return extract_email_address(self.from_.value)
+
+    @cached_property
+    def to(self) -> "MessagePartHeader":
+        return self.headers_mapping["To"]
+
+    @cached_property
+    def to_name(self) -> str:
+        return extract_email_name(self.to.value)
+
+    @cached_property
+    def to_email(self) -> str:
+        return extract_email_address(self.to.value)
+
+    @cached_property
+    def cc(self) -> T.Optional["MessagePartHeader"]:
+        return self.headers_mapping.get("Cc")
+
+    @cached_property
+    def cc_names(self) -> list[str]:
+        return [extract_email_name(text.strip()) for text in self.cc.value.split(",")]
+
+    @cached_property
+    def cc_name_emails(self) -> list["Email"]:
+        return [
+            Email(
+                name=extract_email_name(text.strip()),
+                address=extract_email_address(text.strip()),
+            )
+            for text in self.cc.value.split(",")
+        ]
 
 
 @dataclasses.dataclass(frozen=True)
