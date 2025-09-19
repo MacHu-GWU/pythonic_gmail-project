@@ -39,6 +39,7 @@ except ImportError:  # pragma: no cover
     import typing as T
 import dataclasses
 from functools import cached_property
+from datetime import datetime, timezone
 
 from func_args.api import REQ, BaseFrozenModel
 
@@ -174,7 +175,8 @@ class CseKeyPair(Base):
     @cached_property
     def privateKeyMetadata(self) -> list["CsePrivateKeyMetadata"]:
         return [
-            CsePrivateKeyMetadata(_data=dct) for dct in self._data.get("privateKeyMetadata", [])
+            CsePrivateKeyMetadata(_data=dct)
+            for dct in self._data.get("privateKeyMetadata", [])
         ]
 
     @cached_property
@@ -392,11 +394,16 @@ class History(Base):
 
     @cached_property
     def labelsAdded(self) -> list["HistoryLabelAdded"]:
-        return [HistoryLabelAdded(_data=dct) for dct in self._data.get("labelsAdded", [])]
+        return [
+            HistoryLabelAdded(_data=dct) for dct in self._data.get("labelsAdded", [])
+        ]
 
     @cached_property
     def labelsRemoved(self) -> list["HistoryLabelRemoved"]:
-        return [HistoryLabelRemoved(_data=dct) for dct in self._data.get("labelsRemoved", [])]
+        return [
+            HistoryLabelRemoved(_data=dct)
+            for dct in self._data.get("labelsRemoved", [])
+        ]
 
     @cached_property
     def messages(self) -> list["Message"]:
@@ -404,12 +411,16 @@ class History(Base):
 
     @cached_property
     def messagesAdded(self) -> list["HistoryMessageAdded"]:
-        return [HistoryMessageAdded(_data=dct) for dct in self._data.get("messagesAdded", [])]
+        return [
+            HistoryMessageAdded(_data=dct)
+            for dct in self._data.get("messagesAdded", [])
+        ]
 
     @cached_property
     def messagesDeleted(self) -> list["HistoryMessageDeleted"]:
         return [
-            HistoryMessageDeleted(_data=dct) for dct in self._data.get("messagesDeleted", [])
+            HistoryMessageDeleted(_data=dct)
+            for dct in self._data.get("messagesDeleted", [])
         ]
 
     @property
@@ -689,7 +700,8 @@ class ListForwardingAddressesResponse(Base):
     @cached_property
     def forwardingAddresses(self) -> list["ForwardingAddress"]:
         return [
-            ForwardingAddress(_data=dct) for dct in self._data.get("forwardingAddresses", [])
+            ForwardingAddress(_data=dct)
+            for dct in self._data.get("forwardingAddresses", [])
         ]
 
     @property
@@ -848,6 +860,10 @@ class Message(Base):
     @property
     def core_data(self) -> T_KWARGS:
         return {"id": self.id, "threadId": self.threadId, "snippet": self.snippet}
+
+    @cached_property
+    def internal_date_datetime(self) -> datetime:
+        return datetime.fromtimestamp(int(self.internalDate) / 1000, tz=timezone.utc)
 
 
 @dataclasses.dataclass(frozen=True)
