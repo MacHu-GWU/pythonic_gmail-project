@@ -909,35 +909,29 @@ class MessagePart(Base):
         return self.headers_mapping["From"]
 
     @cached_property
-    def from_name(self) -> str:
-        return extract_email_name(self.from_.value)
-
-    @cached_property
-    def from_email(self) -> str:
-        return extract_email_address(self.from_.value)
+    def from_email(self) -> "Email":
+        return Email(
+            name=extract_email_name(self.from_.value),
+            address=extract_email_address(self.from_.value),
+        )
 
     @cached_property
     def to(self) -> "MessagePartHeader":
         return self.headers_mapping["To"]
 
     @cached_property
-    def to_name(self) -> str:
-        return extract_email_name(self.to.value)
-
-    @cached_property
-    def to_email(self) -> str:
-        return extract_email_address(self.to.value)
+    def to_email(self) -> "Email":
+        return Email(
+            name=extract_email_name(self.to.value),
+            address=extract_email_address(self.to.value),
+        )
 
     @cached_property
     def cc(self) -> T.Optional["MessagePartHeader"]:
         return self.headers_mapping.get("Cc")
 
     @cached_property
-    def cc_names(self) -> list[str]:
-        return [extract_email_name(text.strip()) for text in self.cc.value.split(",")]
-
-    @cached_property
-    def cc_name_emails(self) -> list["Email"]:
+    def cc_emails(self) -> list["Email"]:
         return [
             Email(
                 name=extract_email_name(text.strip()),
@@ -945,6 +939,14 @@ class MessagePart(Base):
             )
             for text in self.cc.value.split(",")
         ]
+
+    @cached_property
+    def subject_text(self) -> str:
+        return self.headers_mapping["Subject"].value
+
+    @cached_property
+    def sent_on_datetime(self) -> datetime:
+        return datetime.fromisoformat(self.headers_mapping["sent-on"].value)
 
 
 @dataclasses.dataclass(frozen=True)
