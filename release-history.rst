@@ -15,6 +15,35 @@ x.y.z (Backlog)
 **Miscellaneous**
 
 
+0.1.2 (2025-09-19)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- **Email Header Processing**: Added comprehensive email header parsing with ``headers_mapping`` property and dedicated accessors for From, To, Cc fields
+- **Email Object Model**: Introduced ``Email`` dataclass for structured representation of email names and addresses
+- **Gmail Deeplink Generation**: Added ``get_deeplink()`` methods to ``Message`` and ``Thread`` classes for generating direct Gmail web interface links
+- **Enhanced DateTime Support**: Added ``internal_date_datetime`` property to ``Message`` class returning UTC datetime objects
+- **Subject and Timestamp Access**: Added ``subject_text`` and ``sent_on_datetime`` properties for convenient email metadata access
+
+**Minor Improvements**
+
+- **Utility Functions**: Created dedicated utility module with email parsing and deeplink generation functions
+- **Test Coverage**: Added comprehensive test suite for utility functions
+- **Documentation Updates**: Enhanced API documentation with detailed module references
+- **Code Organization**: Improved model structure with better separation of concerns
+
+**Bugfixes**
+
+- **Robust Data Access**: Enhanced model classes to use ``dict.get()`` with default empty lists, preventing ``KeyError`` exceptions when API response keys are missing
+- **List Property Safety**: Updated all list-type properties to gracefully handle missing data fields
+
+**Miscellaneous**
+
+- **Python Version Requirement**: Bumped minimum Python version requirement to 3.10
+- **Dependency Updates**: Updated all dependency versions and removed Python 3.9 compatibility code
+- **CI/CD Updates**: Removed Python 3.9 from test matrix and updated workflow configurations
+
+
 0.1.1 (2025-09-18)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
