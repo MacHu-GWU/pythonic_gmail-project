@@ -44,7 +44,11 @@ from datetime import datetime, timezone
 from func_args.api import REQ, BaseFrozenModel
 
 from .type_hint import T_KWARGS, T_RESPONSE
-from .utils import extract_email_name, extract_email_address
+from .utils import (
+    extract_email_name,
+    extract_email_address,
+    create_email_deeplink,
+)
 from .custom_model import Email
 
 if T.TYPE_CHECKING:  # pragma: no cover
@@ -867,6 +871,12 @@ class Message(Base):
     def internal_date_datetime(self) -> datetime:
         return datetime.fromtimestamp(int(self.internalDate) / 1000, tz=timezone.utc)
 
+    def get_deeplink(self, acc: str | None = None) -> str:
+        return create_email_deeplink(
+            thread_id_or_message_id=self.id,
+            acc=acc,
+        )
+
 
 @dataclasses.dataclass(frozen=True)
 class MessagePart(Base):
@@ -1238,6 +1248,12 @@ class Thread(Base):
     @property
     def core_data(self) -> T_KWARGS:
         return {"id": self.id, "snippet": self.snippet}
+
+    def get_deeplink(self, acc: str | None = None) -> str:
+        return create_email_deeplink(
+            thread_id_or_message_id=self.id,
+            acc=acc,
+        )
 
 
 @dataclasses.dataclass(frozen=True)
