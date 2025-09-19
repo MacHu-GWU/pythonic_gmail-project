@@ -95,7 +95,7 @@ class BatchDeleteMessagesRequest(Base):
 
     @cached_property
     def ids(self):
-        return self._data["ids"]
+        return self._data.get("ids", [])
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -108,15 +108,15 @@ class BatchModifyMessagesRequest(Base):
 
     @cached_property
     def addLabelIds(self):
-        return self._data["addLabelIds"]
+        return self._data.get("addLabelIds", [])
 
     @cached_property
     def ids(self):
-        return self._data["ids"]
+        return self._data.get("ids", [])
 
     @cached_property
     def removeLabelIds(self):
-        return self._data["removeLabelIds"]
+        return self._data.get("removeLabelIds", [])
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -174,12 +174,12 @@ class CseKeyPair(Base):
     @cached_property
     def privateKeyMetadata(self) -> list["CsePrivateKeyMetadata"]:
         return [
-            CsePrivateKeyMetadata(_data=dct) for dct in self._data["privateKeyMetadata"]
+            CsePrivateKeyMetadata(_data=dct) for dct in self._data.get("privateKeyMetadata", [])
         ]
 
     @cached_property
     def subjectEmailAddresses(self):
-        return self._data["subjectEmailAddresses"]
+        return self._data.get("subjectEmailAddresses", [])
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -289,7 +289,7 @@ class FilterAction(Base):
 
     @cached_property
     def addLabelIds(self):
-        return self._data["addLabelIds"]
+        return self._data.get("addLabelIds", [])
 
     @cached_property
     def forward(self):
@@ -297,7 +297,7 @@ class FilterAction(Base):
 
     @cached_property
     def removeLabelIds(self):
-        return self._data["removeLabelIds"]
+        return self._data.get("removeLabelIds", [])
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -392,24 +392,24 @@ class History(Base):
 
     @cached_property
     def labelsAdded(self) -> list["HistoryLabelAdded"]:
-        return [HistoryLabelAdded(_data=dct) for dct in self._data["labelsAdded"]]
+        return [HistoryLabelAdded(_data=dct) for dct in self._data.get("labelsAdded", [])]
 
     @cached_property
     def labelsRemoved(self) -> list["HistoryLabelRemoved"]:
-        return [HistoryLabelRemoved(_data=dct) for dct in self._data["labelsRemoved"]]
+        return [HistoryLabelRemoved(_data=dct) for dct in self._data.get("labelsRemoved", [])]
 
     @cached_property
     def messages(self) -> list["Message"]:
-        return [Message(_data=dct) for dct in self._data["messages"]]
+        return [Message(_data=dct) for dct in self._data.get("messages", [])]
 
     @cached_property
     def messagesAdded(self) -> list["HistoryMessageAdded"]:
-        return [HistoryMessageAdded(_data=dct) for dct in self._data["messagesAdded"]]
+        return [HistoryMessageAdded(_data=dct) for dct in self._data.get("messagesAdded", [])]
 
     @cached_property
     def messagesDeleted(self) -> list["HistoryMessageDeleted"]:
         return [
-            HistoryMessageDeleted(_data=dct) for dct in self._data["messagesDeleted"]
+            HistoryMessageDeleted(_data=dct) for dct in self._data.get("messagesDeleted", [])
         ]
 
     @property
@@ -423,7 +423,7 @@ class HistoryLabelAdded(Base):
 
     @cached_property
     def labelIds(self):
-        return self._data["labelIds"]
+        return self._data.get("labelIds", [])
 
     @cached_property
     def message(self) -> "Message":
@@ -440,7 +440,7 @@ class HistoryLabelRemoved(Base):
 
     @cached_property
     def labelIds(self):
-        return self._data["labelIds"]
+        return self._data.get("labelIds", [])
 
     @cached_property
     def message(self) -> "Message":
@@ -604,7 +604,7 @@ class ListCseIdentitiesResponse(Base):
 
     @cached_property
     def cseIdentities(self) -> list["CseIdentity"]:
-        return [CseIdentity(_data=dct) for dct in self._data["cseIdentities"]]
+        return [CseIdentity(_data=dct) for dct in self._data.get("cseIdentities", [])]
 
     @cached_property
     def nextPageToken(self):
@@ -621,7 +621,7 @@ class ListCseKeyPairsResponse(Base):
 
     @cached_property
     def cseKeyPairs(self) -> list["CseKeyPair"]:
-        return [CseKeyPair(_data=dct) for dct in self._data["cseKeyPairs"]]
+        return [CseKeyPair(_data=dct) for dct in self._data.get("cseKeyPairs", [])]
 
     @cached_property
     def nextPageToken(self):
@@ -638,7 +638,7 @@ class ListDelegatesResponse(Base):
 
     @cached_property
     def delegates(self) -> list["Delegate"]:
-        return [Delegate(_data=dct) for dct in self._data["delegates"]]
+        return [Delegate(_data=dct) for dct in self._data.get("delegates", [])]
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -651,7 +651,7 @@ class ListDraftsResponse(Base):
 
     @cached_property
     def drafts(self) -> list["Draft"]:
-        return [Draft(_data=dct) for dct in self._data["drafts"]]
+        return [Draft(_data=dct) for dct in self._data.get("drafts", [])]
 
     @cached_property
     def nextPageToken(self):
@@ -675,7 +675,7 @@ class ListFiltersResponse(Base):
 
     @cached_property
     def filter(self) -> list["Filter"]:
-        return [Filter(_data=dct) for dct in self._data["filter"]]
+        return [Filter(_data=dct) for dct in self._data.get("filter", [])]
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -689,7 +689,7 @@ class ListForwardingAddressesResponse(Base):
     @cached_property
     def forwardingAddresses(self) -> list["ForwardingAddress"]:
         return [
-            ForwardingAddress(_data=dct) for dct in self._data["forwardingAddresses"]
+            ForwardingAddress(_data=dct) for dct in self._data.get("forwardingAddresses", [])
         ]
 
     @property
@@ -703,7 +703,7 @@ class ListHistoryResponse(Base):
 
     @cached_property
     def history(self) -> list["History"]:
-        return [History(_data=dct) for dct in self._data["history"]]
+        return [History(_data=dct) for dct in self._data.get("history", [])]
 
     @cached_property
     def historyId(self):
@@ -724,7 +724,7 @@ class ListLabelsResponse(Base):
 
     @cached_property
     def labels(self) -> list["Label"]:
-        return [Label(_data=dct) for dct in self._data["labels"]]
+        return [Label(_data=dct) for dct in self._data.get("labels", [])]
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -737,7 +737,7 @@ class ListMessagesResponse(Base):
 
     @cached_property
     def messages(self) -> list["Message"]:
-        return [Message(_data=dct) for dct in self._data["messages"]]
+        return [Message(_data=dct) for dct in self._data.get("messages", [])]
 
     @cached_property
     def nextPageToken(self):
@@ -761,7 +761,7 @@ class ListSendAsResponse(Base):
 
     @cached_property
     def sendAs(self) -> list["SendAs"]:
-        return [SendAs(_data=dct) for dct in self._data["sendAs"]]
+        return [SendAs(_data=dct) for dct in self._data.get("sendAs", [])]
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -774,7 +774,7 @@ class ListSmimeInfoResponse(Base):
 
     @cached_property
     def smimeInfo(self) -> list["SmimeInfo"]:
-        return [SmimeInfo(_data=dct) for dct in self._data["smimeInfo"]]
+        return [SmimeInfo(_data=dct) for dct in self._data.get("smimeInfo", [])]
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -795,7 +795,7 @@ class ListThreadsResponse(Base):
 
     @cached_property
     def threads(self) -> list["Thread"]:
-        return [Thread(_data=dct) for dct in self._data["threads"]]
+        return [Thread(_data=dct) for dct in self._data.get("threads", [])]
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -823,7 +823,7 @@ class Message(Base):
 
     @cached_property
     def labelIds(self):
-        return self._data["labelIds"]
+        return self._data.get("labelIds", [])
 
     @cached_property
     def payload(self) -> "MessagePart":
@@ -864,7 +864,7 @@ class MessagePart(Base):
 
     @cached_property
     def headers(self) -> list["MessagePartHeader"]:
-        return [MessagePartHeader(_data=dct) for dct in self._data["headers"]]
+        return [MessagePartHeader(_data=dct) for dct in self._data.get("headers", [])]
 
     @cached_property
     def mimeType(self):
@@ -876,7 +876,7 @@ class MessagePart(Base):
 
     @cached_property
     def parts(self) -> list["MessagePart"]:
-        return [MessagePart(_data=dct) for dct in self._data["parts"]]
+        return [MessagePart(_data=dct) for dct in self._data.get("parts", [])]
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -927,11 +927,11 @@ class ModifyMessageRequest(Base):
 
     @cached_property
     def addLabelIds(self):
-        return self._data["addLabelIds"]
+        return self._data.get("addLabelIds", [])
 
     @cached_property
     def removeLabelIds(self):
-        return self._data["removeLabelIds"]
+        return self._data.get("removeLabelIds", [])
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -944,11 +944,11 @@ class ModifyThreadRequest(Base):
 
     @cached_property
     def addLabelIds(self):
-        return self._data["addLabelIds"]
+        return self._data.get("addLabelIds", [])
 
     @cached_property
     def removeLabelIds(self):
-        return self._data["removeLabelIds"]
+        return self._data.get("removeLabelIds", [])
 
     @property
     def core_data(self) -> T_KWARGS:
@@ -1163,7 +1163,7 @@ class Thread(Base):
 
     @cached_property
     def messages(self) -> list["Message"]:
-        return [Message(_data=dct) for dct in self._data["messages"]]
+        return [Message(_data=dct) for dct in self._data.get("messages", [])]
 
     @cached_property
     def snippet(self):
@@ -1232,7 +1232,7 @@ class WatchRequest(Base):
 
     @cached_property
     def labelIds(self):
-        return self._data["labelIds"]
+        return self._data.get("labelIds", [])
 
     @cached_property
     def topicName(self):
