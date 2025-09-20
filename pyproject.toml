@@ -45,6 +45,7 @@ classifier = [
 dependencies = [
     "typing-extensions>=4.0.0,<5.0.0; python_version<'3.11'",
     "more-itertools>=10.6.0; python_version<'3.12'",
+    "soft-deps>=0.1.1,<1.0.0",
     "enum-mate>=0.1.1,<1.0.0",
     "func-args>=1.0.1,<2.0.0",
     "iterproxy>=0.3.1,<1.0.0",

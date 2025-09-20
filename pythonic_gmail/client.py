@@ -17,7 +17,7 @@ from .batch import batch_get
 from .iterator import ListMessagesResponseIterProxy
 from .iterator import ListThreadsResponseIterProxy
 
-from .model import Message
+from .model import Message, Thread
 
 if T.TYPE_CHECKING:
     from googleapiclient._apis.gmail.v1 import GmailResource
@@ -194,7 +194,7 @@ def batch_get_messages(
         :func:`pagi_list_messages` for obtaining message IDs and
         :func:`batch_get_threads` for retrieving threads.
     """
-    return batch_get(
+    iterator = batch_get(
         gmail=gmail,
         method=gmail.users().messages().get,
         ids=ids,
@@ -202,6 +202,7 @@ def batch_get_messages(
         batch_size=batch_size,
         kwargs=kwargs,
     )
+    return [Message.new(dct) for dct in iterator]
 
 
 def batch_get_threads(
@@ -251,7 +252,7 @@ def batch_get_threads(
         :func:`pagi_list_threads` for obtaining thread IDs and
         :func:`batch_get_messages` for retrieving messages.
     """
-    return batch_get(
+    iterator = batch_get(
         gmail=gmail,
         method=gmail.users().threads().get,
         ids=ids,
@@ -259,3 +260,4 @@ def batch_get_threads(
         batch_size=batch_size,
         kwargs=kwargs,
     )
+    return [Thread.new(dct) for dct in iterator]

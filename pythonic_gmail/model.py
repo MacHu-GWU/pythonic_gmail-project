@@ -48,6 +48,8 @@ from .utils import (
     extract_email_name,
     extract_email_address,
     create_email_deeplink,
+    b64decode_with_auto_padding,
+    html_to_text,
 )
 from .custom_model import Email
 
@@ -957,6 +959,16 @@ class MessagePart(Base):
     @cached_property
     def sent_on_datetime(self) -> datetime:
         return datetime.fromisoformat(self.headers_mapping["sent-on"].value)
+
+    @cached_property
+    def text_body(self) -> str:
+        part = self.parts[-1]
+        if part.mimeType == "text/plain":
+            return b64decode_with_auto_padding(part.body.data)
+        elif part.mimeType == "text/html":
+            return html_to_text(b64decode_with_auto_padding(part.body.data))
+        else:
+            raise ValueError(f"Unknown mimeType: {part.mimeType}")
 
 
 @dataclasses.dataclass(frozen=True)

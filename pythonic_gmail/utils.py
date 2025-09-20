@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import base64
+
+from .lazy_imports import bs4
+
 
 def extract_email_name(text: str) -> str:
     """
@@ -26,3 +30,14 @@ def create_email_deeplink(
     if acc is None:
         acc = "0"
     return f"https://mail.google.com/mail/u/{acc}/#all/{thread_id_or_message_id}"
+
+
+def b64decode_with_auto_padding(s: str) -> str:
+    s = s.replace("-", "+").replace("_", "/")
+    s += "=" * (-len(s) % 4)
+    return base64.b64decode(s).decode("utf-8")
+
+
+def html_to_text(html: str) -> str:
+    soup = bs4.BeautifulSoup(html, "html.parser")
+    return soup.text
