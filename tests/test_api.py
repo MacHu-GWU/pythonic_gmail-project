@@ -60,6 +60,7 @@ def test():
     _ = api.VacationSettings
     _ = api.WatchRequest
     _ = api.WatchResponse
+    _ = api.Email
     _ = api.ListMessagesResponseIterProxy
     _ = api.ListThreadsResponseIterProxy
     _ = api.paginate
@@ -68,6 +69,9 @@ def test():
     _ = api.pagi_list_threads
     _ = api.batch_get_messages
     _ = api.batch_get_threads
+    _ = api.ClientBuilder
+    _ = api.LocalPathClientBuilder
+    _ = api.AwsParameterStoreClientBuilder
 
 
 if __name__ == "__main__":

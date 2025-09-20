@@ -922,6 +922,9 @@ class MessagePart(Base):
 
     @cached_property
     def from_email(self) -> "Email":
+        """
+        Extracts and returns an Email object from the From field of the email
+        """
         return Email(
             name=extract_email_name(self.from_.value),
             address=extract_email_address(self.from_.value),
@@ -933,6 +936,9 @@ class MessagePart(Base):
 
     @cached_property
     def to_email(self) -> "Email":
+        """
+        Extracts and returns an Email object from the To field of the email
+        """
         return Email(
             name=extract_email_name(self.to.value),
             address=extract_email_address(self.to.value),
@@ -944,6 +950,9 @@ class MessagePart(Base):
 
     @cached_property
     def cc_emails(self) -> list["Email"]:
+        """
+        Extracts and returns a list of Email objects from the CC field of the email
+        """
         return [
             Email(
                 name=extract_email_name(text.strip()),
@@ -954,14 +963,29 @@ class MessagePart(Base):
 
     @cached_property
     def subject_text(self) -> str:
+        """
+        Extracts and returns the subject of the email message.
+        """
         return self.headers_mapping["Subject"].value
 
     @cached_property
     def sent_on_datetime(self) -> datetime:
+        """
+        Extracts and returns the sent date and time of the email message as a
+        """
         return datetime.fromisoformat(self.headers_mapping["sent-on"].value)
 
     @cached_property
     def text_body(self) -> str:
+        """
+        Extracts and returns the text body of the email message.
+
+        .. note::
+
+            This implementation may not right, we may need to inspect the
+            payload.mimeType first and then decide how to extract the text body
+            from tree of parts.
+        """
         part = self.parts[-1]
         if part.mimeType == "text/plain":
             return b64decode_with_auto_padding(part.body.data)

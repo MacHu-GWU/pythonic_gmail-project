@@ -54,6 +54,7 @@ from .model import Thread
 from .model import VacationSettings
 from .model import WatchRequest
 from .model import WatchResponse
+from .custom_model import Email
 from .iterator import ListMessagesResponseIterProxy
 from .iterator import ListThreadsResponseIterProxy
 from .paginate import paginate
@@ -62,3 +63,6 @@ from .client import pagi_list_messages
 from .client import pagi_list_threads
 from .client import batch_get_messages
 from .client import batch_get_threads
+from .client_builder import ClientBuilder
+from .client_builder import LocalPathClientBuilder
+from .client_builder import AwsParameterStoreClientBuilder
