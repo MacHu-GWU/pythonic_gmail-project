@@ -15,6 +15,46 @@ x.y.z (Backlog)
 **Miscellaneous**
 
 
+0.1.3 (2025-09-20)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- **Gmail Client Builder System**: Introduced flexible authentication builders supporting multiple credential storage strategies
+
+  - ``ClientBuilder`` abstract base class for OAuth2 authentication flow management
+  - ``LocalPathClientBuilder`` for local file-based credential storage (ideal for development)
+  - ``AwsParameterStoreClientBuilder`` for AWS SSM Parameter Store credential storage (ideal for production)
+  - Automatic token refresh and re-authentication handling with browser fallback
+
+- **Enhanced Message Processing**: Added comprehensive text extraction capabilities
+
+  - ``text_body`` property for ``MessagePart`` with automatic HTML-to-text conversion
+  - Base64 decoding with automatic padding correction for email content
+  - BeautifulSoup4 integration for robust HTML parsing (lazy-loaded dependency)
+
+- **Expanded Public API**: Enhanced API surface with authentication and email processing components
+
+  - Added ``Email`` class and client builders to public API exports
+  - Improved API discoverability for end-user applications
+
+**Minor Improvements**
+
+- **Documentation Enhancement**: Comprehensive docstring improvements across all client builder classes and methods
+- **Example Scripts**: Added production-ready example scripts demonstrating both local and AWS-based authentication
+- **Dependency Management**: Added optional email processing dependencies with lazy loading
+- **Code Organization**: Introduced lazy import utilities for optional dependencies
+
+**Bugfixes**
+
+- **Batch Operations**: Updated ``batch_get_messages`` and ``batch_get_threads`` to return proper model instances instead of raw dictionaries
+
+**Miscellaneous**
+
+- **Developer Tools**: Added Claude Code docstring improvement command configuration
+- **Script Organization**: Reorganized example scripts with clear local vs. cloud authentication patterns
+- **AWS Integration**: Added AWS SSM parameter utilities for production credential management
+
+
 0.1.2 (2025-09-19)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
