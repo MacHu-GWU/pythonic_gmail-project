@@ -62,6 +62,9 @@ dependencies = [
 # IMPORTANT: all optional dependencies has to be compatible with the "requires-python" field
 # ------------------------------------------------------------------------------
 [project.optional-dependencies]
+email = [
+    "beautifulsoup4>=4.10.0,<5.0.0", # parse HTML email
+]
 
 # ------------------------------------------------------------------------------
 # Local Development dependenceies
